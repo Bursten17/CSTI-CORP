@@ -1,0 +1,21 @@
+{
+  "name": "api-csti-corp",
+  "version": "0.1.0",
+  "description": "api-csti-corp",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chat",
+    "telegram",
+    "server"
+  ],
+  "author": "Fernando Magallanes Escate",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mssql": "^7.2.1"
+  }
+}

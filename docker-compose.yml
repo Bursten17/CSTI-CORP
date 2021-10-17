@@ -1,0 +1,55 @@
+version: '3.4'
+
+services:
+  database-csti-corp:
+    container_name: database-csti-corp
+    # image: bursten/database-csti-corp
+    build:
+      context: ./database-csti-corp
+      dockerfile: ./Dockerfile
+    volumes:
+      - my-data-sql:/var/opt/mssql
+    restart: on-failure
+    ports:
+       - 3000:1433 
+    environment:
+      - SA_PASSWORD=qlixim-30
+      - ACCEPT_EULA=Y
+    
+  api-csti-corp:
+    container_name: api-csti-corp
+    image: bursten/api-csti-corp:latest
+    build:
+      context: ./api-csti-corp
+      dockerfile: ./Dockerfile
+      target: dev
+    volumes:
+      - ./api-csti-corp/:/usr/src/app/
+      - /usr/src/app/node_modules
+    restart: on-failure
+    environment:
+      - NODE_ENV=production
+      - HOST=database-csti-corp
+      - PORT=4000
+      - DATABASE=CSTI_CORP
+      - PASSWORD=qlixim-30
+    ports:
+      - 4000:4000
+      - 9229:9229 #es el puero del debug
+
+  client-csti-corp:
+    container_name: client-csti-corp
+    image: bursten/client-csti-corp:latest
+    build:
+      context: ./client-csti-corp
+      dockerfile: ./Dockerfile
+    restart: on-failure
+    environment:
+      - VUE_APP_BASE_URL=api-csti-corp
+    depends_on: 
+      - api-csti-corp
+    ports:
+      - "8080:80"
+volumes:
+  my-data-sql:
+
